@@ -1,59 +1,59 @@
 # Wiki_Extractor
-抓取維基百科中文資料，簡轉繁並萃取文字內容整理成 JSON 檔案
+提取维基百科中文资料，繁转简并提取文字内容整理成 JSON 文件
 
-## 檔案說明
+## 文件说明
 
-opencc資料夾為簡體中文轉繁體中文之套件
+opencc文件夹为简体中文转繁体中文的套件
 
-Wiki_Extractor.py 萃取維基百科內文 （ 使用 https://github.com/attardi/wikiextractor 所提供的 code ）
+Wiki_Extractor.py 提取维基百科内容（ 使用 https://github.com/attardi/wikiextractor 所提供的 code ）
 
-Wiki_Cleaning.py 將資料轉換為 json 格式
+Wiki_Cleaning.py 将资料转换为 json 格式
 
-Wiki_Tokenize.py 將內文進行斷詞
+Wiki_Tokenize.py 将内容进行断词
 
-Wiki_to_Word2vec_Data. 轉換成 Word2vec 的訓練資料格式
+Wiki_to_Word2vec_Data. 转换成 Word2vec 的训练资料格式
 
 ## 初始化
 
 ``` 
 git clone https://github.com/NCHU-NLU-Lab/Wiki_Extractor.git
 ```
-或者使用下載方式把 github 上的資料載到本地端（ 解壓縮後資料夾名稱為 Wiki_Extractor-master ）
+或者使用下载方式把 github 上的资料载到本地端（ 解压缩后文件夹名称为 Wiki_Extractor-master ）
 
-## 安裝所需套件
+## 安装所需套件
 
 ``` 
 pip3 install -r requirements.txt
 ```
 
-## 下載維基百科資料
+## 下载维基百科资料
 
-資料下載處：https://dumps.wikimedia.org/zhwiki/latest/zhwiki-latest-pages-articles.xml.bz2
+资料下载处：https://dumps.wikimedia.org/zhwiki/latest/zhwiki-latest-pages-articles.xml.bz2
 
 在 linux 可直接下指令 
 ``` 
 wget https://dumps.wikimedia.org/zhwiki/latest/zhwiki-latest-pages-articles.xml.bz2
 ```
 
-## 萃取維基百科內容
+## 提取维基百科內容
 
 ``` 
 python3 Wiki_Extractor.py -b 1024M -o extracted zhwiki-latest-pages-articles.xml.bz2
 ```
-萃取完的資料會跑到 /extracted/AA/
+提取完的资料会保存到 /extracted/AA/
 
-## 將文章內容簡轉繁並整理成 Json 格式
+## 将文章内容繁转简并整理成 Json 格式
 
 ``` 
 python3 Wiki_Cleaning.py --file_path ./extracted/AA/
 ```
 
-轉換後資料格式
+转换后资料格式
 ``` 
 [
   { 
-    "id" : (int) 編號 ,
-    "title" : (str) 文章標題  ,
+    "id" : (int) 编号 ,
+    "title" : (str) 文章标题  ,
     "articles" : (str) 文章內容
   },
 ...
@@ -61,34 +61,29 @@ python3 Wiki_Cleaning.py --file_path ./extracted/AA/
 ```
 <img src="https://i.imgur.com/gkHUe14.jpg" width="900px"/>
 
-## 依照文章每一句的內容進行斷詞
+## 依照文章每一句的內容进行断词
 ``` 
 python3 Wiki_Tokenize.py --file_path wiki.json
 ```
-轉換後資料格式
+转换后资料格式
 ``` 
 [
   { 
-    "id" : (int) 編號 ,
-    "title" : (str) 文章標題  ,
-    "tokens" : (list) 每一句斷詞內容
+    "id" : (int) 编号 ,
+    "title" : (str) 文章标题  ,
+    "tokens" : (list) 每一句断词內容
   },
 ...
 ]
 ```
 <img src="https://imgur.com/4zn4w3Y.jpg" width="900px"/>
 
-## 將維基百科內容轉換成 Word2vec 訓練資料格式
+## 将维基百科內容转换成 Word2vec 训练资料格式
 ``` 
 python3 Wiki_to_Word2vec_Data.py --file_path wiki_tokenize.json 
 ```
-轉換後資料為
+转换后资料为
 
 <img src="https://imgur.com/eCxwp7b.jpg" width="900px"/>
 
-## 下載資料
-
-底下的連結有我們整理好的 wiki data
-
-https://drive.google.com/drive/folders/1BvVVbRLD-W_954UchTi2KJTYPjqD-LJX?usp=sharing
 
