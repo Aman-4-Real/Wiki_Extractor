@@ -2,6 +2,7 @@ import json
 from opencc import OpenCC
 import os 
 import argparse
+from tqdm import tqdm
 
 def main():
 
@@ -19,15 +20,15 @@ def main():
             raw_data += file.read()
 
 
-    # 簡體繁體中文編碼
-    opencc = OpenCC('s2t') 
-    print("進行簡轉繁中...")
+    # 繁体简体中文编码
+    opencc = OpenCC('t2s') 
+    print("进行繁转简中...")
     raw_data = opencc.convert(raw_data)
-    print("簡轉繁已完成")
+    print("繁转简已完成")
 
     res = []
     error_num = 0
-    for i, doc in enumerate(raw_data.split('<doc ')[1:1000]):
+    for i, doc in enumerate(tqdm(raw_data.split('<doc ')[1:])):
         articles = ''
         try:
             for j, t in enumerate(doc.strip().split('\n')[1:-1]):
@@ -41,15 +42,15 @@ def main():
         except Exception as e:
             error_num+=1
             raise e
-        res.append({'id' : i, 'title' : title,'articles' : articles})
+        res.append({'id': i, 'title': title, 'articles': articles})
 
     # print(len(res))
     # print('error_num', error_num)
     
-    print("總篇數：", len(res))
+    print("总篇数：", len(res))
 
-    json.dump(res,open(args.output_path + 'wiki.json','w'))
-
+    json.dump(res, open(args.output_path + 'wiki.json','w'), ensure_ascii=False)
+    # ensure_ascii=False 保证输出到文件的是中文内容而不是unicode编码
 
 if __name__ == '__main__':
     main()
